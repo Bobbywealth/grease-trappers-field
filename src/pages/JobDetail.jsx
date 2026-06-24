@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock as ClockIcon, CheckCircle, Loader2, Camera, Pen } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock as ClockIcon, CheckCircle, Loader2, Camera } from 'lucide-react';
 import { apiGet, apiPost } from '../lib/api';
 
 export default function JobDetail() {
@@ -12,12 +12,18 @@ export default function JobDetail() {
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
 
-  useEffect(() => {
-    apiGet(`/api/jobs/${id}`)
-      .then(setJob)
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [id]);
+  const fetchJob = async () => {
+    try {
+      const data = await apiGet(`/api/jobs/${id}`);
+      setJob(data);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchJob(); }, [id]);
 
   const handlePhoto = (e) => {
     const f = e.target.files?.[0];
@@ -32,8 +38,7 @@ export default function JobDetail() {
     setBusy(true); setError('');
     try {
       await apiPost(`/api/jobs/${id}/start`, {});
-      const data = await apiGet(`/api/jobs/${id}`);
-      setJob(data);
+      await fetchJob();
     } catch (e) { setError(e.message); }
     finally { setBusy(false); }
   };
@@ -42,8 +47,7 @@ export default function JobDetail() {
     setBusy(true); setError('');
     try {
       await apiPost(`/api/jobs/${id}/complete`, {});
-      const data = await apiGet(`/api/jobs/${id}`);
-      setJob(data);
+      await fetchJob();
     } catch (e) { setError(e.message); }
     finally { setBusy(false); }
   };
@@ -61,6 +65,10 @@ export default function JobDetail() {
     );
   }
 
+  const customerName = job.customer_name || job.business_name || 'Customer';
+  const address = job.address || job.customer_address;
+  const city = job.city || job.customer_city;
+
   return (
     <div className="min-h-screen bg-gray-100 max-w-md mx-auto">
       <header className="bg-white px-4 py-3 border-b border-gray-200 flex items-center gap-3 sticky top-0 z-10">
@@ -72,13 +80,15 @@ export default function JobDetail() {
         {error && <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>}
 
         <div className="bg-white rounded-2xl p-5 border border-gray-200">
-          <div className="font-bold text-lg mb-1">{job.customer?.business_name}</div>
-          <div className="flex items-center gap-1 text-sm text-gray-600 mb-1">
-            <MapPin className="w-4 h-4" />
-            {job.customer?.address}, {job.customer?.city} {job.customer?.state}
-          </div>
-          {job.customer?.phone && (
-            <a href={`tel:${job.customer.phone}`} className="text-sm text-brand-pink">📞 {job.customer.phone}</a>
+          <div className="font-bold text-lg mb-1">{customerName}</div>
+          {address && (
+            <div className="flex items-center gap-1 text-sm text-gray-600 mb-1">
+              <MapPin className="w-4 h-4" />
+              {address}{city ? `, ${city}` : ''} {job.state || ''}
+            </div>
+          )}
+          {job.contact_phone && (
+            <a href={`tel:${job.contact_phone}`} className="text-sm text-brand-pink">📞 {job.contact_phone}</a>
           )}
           <div className="mt-3 pt-3 border-t border-gray-100">
             <span className={`text-xs px-2 py-1 rounded-full font-medium ${
@@ -96,7 +106,6 @@ export default function JobDetail() {
           </div>
         )}
 
-        {/* Action buttons */}
         <div className="space-y-3">
           {job.status === 'scheduled' && (
             <button onClick={start} disabled={busy}

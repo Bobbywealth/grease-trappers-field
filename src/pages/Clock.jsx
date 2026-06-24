@@ -96,12 +96,12 @@ export default function Clock() {
             {shift ? 'On the clock' : 'Not on the clock'}
           </div>
           <div className="text-3xl font-bold mb-4">
-            {shift ? new Date(shift.clock_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—'}
+            {shift ? new Date(shift.clock_in_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—'}
           </div>
-          {shift?.clock_in_location && (
+          {shift?.clock_in_address && (
             <div className="flex items-center gap-1 text-xs opacity-80 mb-4">
               <MapPin className="w-3 h-3" />
-              {shift.clock_in_location}
+              {shift.clock_in_address}
             </div>
           )}
           {shift ? (

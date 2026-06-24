@@ -10,7 +10,7 @@ export default function Jobs() {
 
   useEffect(() => {
     apiGet('/api/jobs/today')
-      .then(setJobs)
+      .then(data => { setJobs(Array.isArray(data) ? data : []); })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
@@ -35,7 +35,7 @@ export default function Jobs() {
         {jobs.map(job => (
           <Link key={job.id} to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-gray-200 hover:border-brand-pink transition-colors">
             <div className="flex items-start justify-between mb-2">
-              <div className="font-semibold text-gray-900">{job.customer?.business_name || 'Customer'}</div>
+              <div className="font-semibold text-gray-900">{job.customer_name || job.customer?.business_name || 'Customer'}</div>
               <span className={`text-xs px-2 py-1 rounded-full font-medium ${
                 job.status === 'completed' ? 'bg-green-100 text-green-700' :
                 job.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
@@ -44,11 +44,11 @@ export default function Jobs() {
             </div>
             <div className="flex items-center gap-1 text-sm text-gray-600 mb-1">
               <ClockIcon className="w-3.5 h-3.5" />
-              {job.scheduled_for ? new Date(job.scheduled_for).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Anytime'}
+              {job.scheduled_time ? new Date(`1970-01-01T${job.scheduled_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Anytime'}
             </div>
             <div className="flex items-center gap-1 text-sm text-gray-600">
               <MapPin className="w-3.5 h-3.5" />
-              {job.customer?.address}, {job.customer?.city}
+              {job.customer_address || job.customer?.address}, {job.customer_city || job.customer?.city}
             </div>
             <ChevronRight className="w-5 h-5 text-gray-400 mt-2 ml-auto" />
           </Link>
