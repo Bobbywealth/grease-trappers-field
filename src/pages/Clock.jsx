@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock as ClockIcon, MapPin, LogOut, Briefcase, Loader2, CheckCircle } from 'lucide-react';
+import { Clock as ClockIcon, MapPin, LogOut, Briefcase, Loader2, CheckCircle, Activity } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiGet, apiPost } from '../lib/api';
+import { useLocationTracker } from '../lib/useLocationTracker';
 
 export default function Clock() {
   const { user, logout } = useAuth();
@@ -11,6 +12,9 @@ export default function Clock() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+
+  // Start tracking whenever there's an open shift
+  const tracking = useLocationTracker({ active: !!shift, intervalMs: 60_000 });
 
   const fetchShift = async () => {
     try {
@@ -31,11 +35,10 @@ export default function Clock() {
       const pos = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000 });
       }).catch(() => null);
-      const body = {
+      await apiPost('/api/time-clock/clock-in', {
         lat: pos?.coords?.latitude,
         lng: pos?.coords?.longitude,
-      };
-      await apiPost('/api/time-clock/clock-in', body);
+      });
       await fetchShift();
     } catch (e) {
       setError(e.message);
@@ -50,11 +53,10 @@ export default function Clock() {
       const pos = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000 });
       }).catch(() => null);
-      const body = {
+      await apiPost('/api/time-clock/clock-out', {
         lat: pos?.coords?.latitude,
         lng: pos?.coords?.longitude,
-      };
-      await apiPost('/api/time-clock/clock-out', body);
+      });
       setShift(null);
       await fetchShift();
     } catch (e) {
@@ -118,6 +120,31 @@ export default function Clock() {
             </button>
           )}
         </div>
+
+        {/* Live tracking status */}
+        {shift && (
+          <div className="bg-white rounded-2xl p-4 border border-gray-200">
+            <div className="flex items-center gap-2 mb-2">
+              <Activity className="w-4 h-4 text-green-500" />
+              <span className="font-semibold text-sm text-gray-900">Live tracking active</span>
+            </div>
+            <div className="text-xs text-gray-600 space-y-1">
+              {tracking.lastFix ? (
+                <>
+                  <div>Last fix: {new Date(tracking.lastFix.captured_at).toLocaleTimeString()}</div>
+                  {tracking.lastFix.accuracy_meters && (
+                    <div>Accuracy: ±{Math.round(tracking.lastFix.accuracy_meters)}m</div>
+                  )}
+                </>
+              ) : (
+                <div>Acquiring GPS...</div>
+              )}
+              {tracking.queuedCount > 0 && (
+                <div className="text-amber-600">{tracking.queuedCount} ping(s) queued for upload</div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Quick links */}
         <Link to="/jobs" className="block bg-white rounded-2xl p-5 border border-gray-200 hover:border-brand-pink transition-colors">
