@@ -53,13 +53,13 @@ export default function JobDetail() {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-brand-pink" /></div>;
+    return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-brand-copper" /></div>;
   }
 
   if (!job) {
     return (
       <div className="min-h-screen p-4">
-        <Link to="/jobs" className="text-brand-pink">← Back</Link>
+        <Link to="/jobs" className="text-brand-copper">← Back</Link>
         <div className="mt-4 text-red-600">{error || 'Job not found'}</div>
       </div>
     );
@@ -88,7 +88,7 @@ export default function JobDetail() {
             </div>
           )}
           {job.contact_phone && (
-            <a href={`tel:${job.contact_phone}`} className="text-sm text-brand-pink">📞 {job.contact_phone}</a>
+            <a href={`tel:${job.contact_phone}`} className="text-sm text-brand-copper">📞 {job.contact_phone}</a>
           )}
           <div className="mt-3 pt-3 border-t border-gray-100">
             <span className={`text-xs px-2 py-1 rounded-full font-medium ${
@@ -109,7 +109,7 @@ export default function JobDetail() {
         <div className="space-y-3">
           {job.status === 'scheduled' && (
             <button onClick={start} disabled={busy}
-              className="w-full bg-brand-pink text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 disabled:opacity-50">
+              className="w-full bg-brand-copper text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-2 disabled:opacity-50">
               {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle className="w-5 h-5" />}
               Start Job
             </button>
@@ -118,7 +118,7 @@ export default function JobDetail() {
             <>
               <label className="block">
                 <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="hidden" />
-                <div className="w-full bg-white border-2 border-dashed border-gray-300 rounded-2xl py-6 flex flex-col items-center gap-2 cursor-pointer hover:border-brand-pink transition-colors">
+                <div className="w-full bg-white border-2 border-dashed border-gray-300 rounded-2xl py-6 flex flex-col items-center gap-2 cursor-pointer hover:border-brand-copper transition-colors">
                   <Camera className="w-8 h-8 text-gray-400" />
                   <span className="text-sm text-gray-600 font-medium">
                     {photoPreview ? 'Photo captured ✓' : 'Take Before/After Photo'}

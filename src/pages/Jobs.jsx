@@ -23,7 +23,7 @@ export default function Jobs() {
       </header>
 
       <div className="p-4 space-y-3">
-        {loading && <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-brand-pink" /></div>}
+        {loading && <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-brand-copper" /></div>}
         {error && <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{error}</div>}
         {!loading && !error && jobs.length === 0 && (
           <div className="text-center py-12 text-gray-500">
@@ -33,7 +33,7 @@ export default function Jobs() {
           </div>
         )}
         {jobs.map(job => (
-          <Link key={job.id} to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-gray-200 hover:border-brand-pink transition-colors">
+          <Link key={job.id} to={`/jobs/${job.id}`} className="block bg-white rounded-2xl p-4 border border-gray-200 hover:border-brand-copper transition-colors">
             <div className="flex items-start justify-between mb-2">
               <div className="font-semibold text-gray-900">{job.customer_name || job.customer?.business_name || 'Customer'}</div>
               <span className={`text-xs px-2 py-1 rounded-full font-medium ${

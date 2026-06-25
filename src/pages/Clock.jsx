@@ -67,14 +67,14 @@ export default function Clock() {
   };
 
   if (loading) {
-    return <Screen><div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 animate-spin text-brand-pink" /></div></Screen>;
+    return <Screen><div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 animate-spin text-brand-copper" /></div></Screen>;
   }
 
   return (
     <Screen>
       <header className="bg-white px-4 py-3 border-b border-gray-200 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-pink flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-brand-copper flex items-center justify-center">
             <ClockIcon className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -93,7 +93,7 @@ export default function Clock() {
         )}
 
         {/* Clock card */}
-        <div className="bg-gradient-to-br from-brand-pink to-pink-600 rounded-2xl p-6 text-white">
+        <div className="bg-gradient-to-br from-brand-copper to-brand-sienna rounded-2xl p-6 text-white">
           <div className="text-xs uppercase tracking-wider opacity-80 mb-1">
             {shift ? 'On the clock' : 'Not on the clock'}
           </div>
@@ -108,13 +108,13 @@ export default function Clock() {
           )}
           {shift ? (
             <button onClick={clockOut} disabled={busy}
-              className="w-full bg-white text-brand-pink font-semibold py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50">
+              className="w-full bg-white text-brand-copper font-semibold py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50">
               {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <LogOut className="w-5 h-5" />}
               Clock Out
             </button>
           ) : (
             <button onClick={clockIn} disabled={busy}
-              className="w-full bg-white text-brand-pink font-semibold py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50">
+              className="w-full bg-white text-brand-copper font-semibold py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-50">
               {busy ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle className="w-5 h-5" />}
               Clock In
             </button>
@@ -147,9 +147,9 @@ export default function Clock() {
         )}
 
         {/* Quick links */}
-        <Link to="/jobs" className="block bg-white rounded-2xl p-5 border border-gray-200 hover:border-brand-pink transition-colors">
+        <Link to="/jobs" className="block bg-white rounded-2xl p-5 border border-gray-200 hover:border-brand-copper transition-colors">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-brand-pink/10 text-brand-pink flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-brand-copper/10 text-brand-copper flex items-center justify-center">
               <Briefcase className="w-6 h-6" />
             </div>
             <div>

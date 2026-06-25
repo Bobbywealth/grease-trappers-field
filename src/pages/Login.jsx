@@ -28,7 +28,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-brand-pink flex items-center justify-center">
+          <div className="w-16 h-16 rounded-2xl bg-brand-copper flex items-center justify-center">
             <Droplets className="w-9 h-9 text-white" />
           </div>
         </div>
@@ -41,7 +41,7 @@ export default function Login() {
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink"
+                className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-copper"
                 placeholder="you@greasetrapers.com" />
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function Login() {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-pink"
+                className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-copper"
                 placeholder="••••••••" />
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function Login() {
             </div>
           )}
           <button type="submit" disabled={loading}
-            className="w-full bg-brand-pink text-white py-3 rounded-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2">
+            className="w-full bg-brand-copper text-white py-3 rounded-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2">
             {loading ? <><Loader2 className="w-5 h-5 animate-spin" /> Signing in...</> : 'Sign In'}
           </button>
         </form>
